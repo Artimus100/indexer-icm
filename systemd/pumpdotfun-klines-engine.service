@@ -1,0 +1,37 @@
+[Unit]
+Description=PumpDotFun Klines Engine Service
+After=network.target redis.service postgresql.service pumpdotfun-core.service
+Wants=network.target
+Requires=redis.service postgresql.service
+
+[Service]
+Type=simple
+User=pumpdotfun
+Group=pumpdotfun
+WorkingDirectory=/opt/pumpdotfun/klines-engine
+ExecStart=/usr/bin/env cargo run
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=pumpdotfun-klines-engine
+
+# Environment variables
+Environment=RUST_LOG=info
+Environment=RUST_BACKTRACE=1
+Environment=DATABASE_URL=postgresql://pumpdotfun:password@localhost/pumpdotfun
+Environment=REDIS_URL=redis://localhost:6379
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/pumpdotfun
+
+# Resource limits
+LimitNOFILE=65536
+MemoryMax=1G
+
+[Install]
+WantedBy=multi-user.target

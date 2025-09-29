@@ -1,0 +1,7 @@
+[Unit]
+Description=PumpDotFun Services
+Wants=pumpdotfun-core.service pumpdotfun-db-processor.service pumpdotfun-klines-engine.service pumpdotfun-wss.service pumpdotfun-api.service
+After=pumpdotfun-core.service pumpdotfun-db-processor.service pumpdotfun-klines-engine.service pumpdotfun-wss.service pumpdotfun-api.service
+
+[Install]
+WantedBy=multi-user.target
