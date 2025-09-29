@@ -1,0 +1,20 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT matviewname\n          FROM pg_matviews\n         WHERE schemaname = 'public'\n           AND matviewname LIKE 'ohlcv_%'\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "matviewname",
+        "type_info": "Name"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      true
+    ]
+  },
+  "hash": "56597a3129dd8743168a435bcf6770f11bdb2b0a962b1ff2790306e5fc29ff43"
+}

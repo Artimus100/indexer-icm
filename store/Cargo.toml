@@ -1,0 +1,12 @@
+[package]
+name = "store"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+diesel = { version = "2.2.12", features = ["postgres", "chrono", "numeric"] }
+serde = { version = "1.0", features = ["derive"] }
+chrono = { version = "0.4", features = ["serde"] }
+bigdecimal = "0.3"
+dotenvy = "0.15.0"
+rust_decimal = { version = "1.32", features = ["serde", "db-diesel-postgres"] }
