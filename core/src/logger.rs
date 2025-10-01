@@ -53,6 +53,12 @@ impl Logger {
 impl<V: std::fmt::Debug + Sync> vixen::Handler<V> for Logger {
     async fn handle(&self, value: &V) -> vixen::HandlerResult<()> {
         let debug_str = format!("{:#?}", value);
+        
+        // Skip logging VirtualPool events entirely to reduce noise
+        if debug_str.contains("VirtualPool(") {
+            return Ok(());
+        }
+        
         info!(" raw data: {:#?}", debug_str);
 
         // Try to parse and extract structured events

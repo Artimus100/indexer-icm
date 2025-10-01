@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # External databases (optional - using DigitalOcean managed services)
   postgres:
     image: timescale/timescaledb-ha:pg17
     container_name: pumpfun-postgres
@@ -17,6 +18,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    profiles: ["local"]  # Only run in local profile
 
   redis:
     image: redis:8.2-alpine
@@ -30,6 +32,70 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    profiles: ["local"]  # Only run in local profile
+
+  # Core indexer service
+  core:
+    build:
+      context: .
+      dockerfile: core/Dockerfile
+    container_name: indexer-core
+    environment:
+      - RUST_LOG=info
+      - REDIS_URL=rediss://default:AVNS_BkPlgZEK_rekF0Dgdc7@db-valkey-nyc3-58554-do-user-25396063-0.l.db.ondigitalocean.com:25061
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  # API service
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: indexer-api
+    environment:
+      - RUST_LOG=info
+      - DATABASE_URL=postgresql://doadmin:AVNS_t3Xgg3yybcDW8r275h6@db-postgresql-nyc3-06292-do-user-25396063-0.k.db.ondigitalocean.com:25060/icm?sslmode=require
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
+  # WebSocket service
+  wss:
+    build:
+      context: .
+      dockerfile: wss/Dockerfile
+    container_name: indexer-wss
+    environment:
+      - RUST_LOG=info
+      - REDIS_URL=rediss://default:AVNS_BkPlgZEK_rekF0Dgdc7@db-valkey-nyc3-58554-do-user-25396063-0.l.db.ondigitalocean.com:25061
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  # Database processor service
+  db-processor:
+    build:
+      context: .
+      dockerfile: db-processor/Dockerfile
+    container_name: indexer-db-processor
+    environment:
+      - RUST_LOG=info
+      - REDIS_URL=rediss://default:AVNS_BkPlgZEK_rekF0Dgdc7@db-valkey-nyc3-58554-do-user-25396063-0.l.db.ondigitalocean.com:25061
+      - DATABASE_URL=postgresql://doadmin:AVNS_t3Xgg3yybcDW8r275h6@db-postgresql-nyc3-06292-do-user-25396063-0.k.db.ondigitalocean.com:25060/icm?sslmode=require
+    restart: unless-stopped
+
+  # KLines engine service
+  klines-engine:
+    build:
+      context: .
+      dockerfile: klines-engine/Dockerfile
+    container_name: indexer-klines-engine
+    environment:
+      - RUST_LOG=info
+      - REDIS_URL=rediss://default:AVNS_BkPlgZEK_rekF0Dgdc7@db-valkey-nyc3-58554-do-user-25396063-0.l.db.ondigitalocean.com:25061
+      - DATABASE_URL=postgresql://doadmin:AVNS_t3Xgg3yybcDW8r275h6@db-postgresql-nyc3-06292-do-user-25396063-0.k.db.ondigitalocean.com:25060/icm?sslmode=require
+    restart: unless-stopped
 
 volumes:
   postgres_data:

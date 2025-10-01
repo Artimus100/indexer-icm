@@ -20,16 +20,24 @@ async fn main() -> Result<(), std::io::Error> {
 
     // Configure CORS
     let cors = Cors::new()
-        .allow_origin("http://localhost:3000")
+        .allow_origin("*")
         .allow_methods(vec![
             Method::GET,
             Method::POST,
             Method::PUT,
             Method::DELETE,
             Method::OPTIONS,
+            Method::PATCH,
         ])
-        .allow_headers(vec!["Content-Type", "Authorization"])
-        .allow_credentials(true);
+        .allow_headers(vec![
+            "Content-Type", 
+            "Authorization", 
+            "Accept", 
+            "Origin", 
+            "X-Requested-With",
+        ])
+        .allow_credentials(true)
+        .max_age(3600);
 
     let app = Route::new()
         .at("/v1/health", get(health_check))
