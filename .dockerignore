@@ -1,0 +1,39 @@
+# Ignore target directory for faster builds
+target/
+**/target/
+
+# Ignore client directory (Node.js app)
+client/
+**/client/
+
+# Ignore systemd deployment files
+systemd/
+**/systemd/
+
+# Ignore git files
+.git/
+.gitignore
+
+# Ignore temporary and cache files
+*.tmp
+*.log
+.DS_Store
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore test files
+test_*
+**/*test*
+
+# Ignore documentation
+README.md
+*.md
+
+# Ignore docker files themselves
+Dockerfile
+docker-compose.yml
+.dockerignore
