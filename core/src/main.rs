@@ -54,7 +54,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             yellowstone_vixen_meteora_dbc_parser::instructions_parser::InstructionParser,
             [logger.clone()], // Use original for instruction handler
             Prefilter::builder().transaction_accounts_include([Pubkey::from_str(
-                "28eYKBRnoVjVCHaJUeLKYzZyBJR3c5TG1UMGQccpSZgE",
+                "POOL_CONFIG",
             )
             .unwrap()]),
         ))
