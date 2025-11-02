@@ -42,7 +42,7 @@ services:
     container_name: indexer-core
     environment:
       - RUST_LOG=info
-      - REDIS_URL=rediss://default:AVNS_BkPlgZEK_rekF0Dgdc7@db-valkey-nyc3-58554-do-user-25396063-0.l.db.ondigitalocean.com:25061
+      - REDIS_URL=redis_url
     ports:
       - "8080:8080"
     restart: unless-stopped
