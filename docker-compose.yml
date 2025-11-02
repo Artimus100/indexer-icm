@@ -55,7 +55,7 @@ services:
     container_name: indexer-api
     environment:
       - RUST_LOG=info
-      - DATABASE_URL=postgresql://doadmin:AVNS_t3Xgg3yybcDW8r275h6@db-postgresql-nyc3-06292-do-user-25396063-0.k.db.ondigitalocean.com:25060/icm?sslmode=require
+      - DATABASE_URL=Database_url
     ports:
       - "3001:3001"
     restart: unless-stopped
